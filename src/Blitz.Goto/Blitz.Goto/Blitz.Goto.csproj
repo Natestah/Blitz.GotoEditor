@@ -7,7 +7,12 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz.Goto</Title>
         <Description>Helper class for suggesting and managing Goto command line parameters for varius popular text editors (VSCode,SublimeText,..)</Description>
-        <PackageReleaseNotes>Initial release..</PackageReleaseNotes>
+        <PackageReleaseNotes>Blitz Goto handles wrangling command lines, to open any Text Editor to a Filename, Line, and Column.</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Copyright>2024 - Nathan Silvers</Copyright>
+        <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include=".\README.md" Pack="true" PackagePath="\"/>
       <EmbeddedResource Include="Resources\GotoDefs.json" />
     </ItemGroup>
 

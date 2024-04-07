@@ -14,7 +14,7 @@ Blitz.GotoEditor features:
 ### How to set up a new project that utilizes Blitz.Goto:
 * Create an [empty console Appliction](https://docs.avaloniaui.net/docs/getting-started).
 * Add a the [nuget reference](https://www.nuget.org/packages/Avalonia.AvaloniaEdit/#versions-body-tab) to the latest version:
-`<PackageReference Include="Blitz.GotoEditor" Version="x.y.z.t" />`
+  `<PackageReference Include="Blitz.GotoEditor" Version="x.y.z.t" />`
 
 * List Built in Editors
 ```.cs
@@ -49,7 +49,5 @@ var directive = new GotoDirective(myFileName, lineNumber, columnNumber);
 ```.cs
 gotoAction.ExecuteGoto(directive);
 ```
-
-![Blitz-demo](https://github.com/Natestah/Blitz.GotoEditor/Blitz.GotoDemo.gif)
 
 
