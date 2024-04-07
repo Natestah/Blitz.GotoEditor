@@ -50,6 +50,6 @@ var directive = new GotoDirective(myFileName, lineNumber, columnNumber);
 gotoAction.ExecuteGoto(directive);
 ```
 
-![Blitz-demo](https://github.com/Natestah/Blitz.GotoEditor/Blitz.GotoDemo.gif)
+![Blitz GotoDemo](https://github.com/Natestah/Blitz.GotoEditor/assets/11800697/2473c701-af2d-429b-97d1-7d48e4799cef)
 
 
