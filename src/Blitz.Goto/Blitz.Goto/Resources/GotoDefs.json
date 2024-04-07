@@ -1,0 +1,55 @@
+[
+  {
+    "Title": "Notepad\u002B\u002B",
+    "Executable": "notepad\u002B\u002B.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\Notepad\u002B\u002B",
+    "Arguments": "%filename% -p%position%"
+  },
+  {
+    "Title": "SublimeText",
+    "Executable": "subl.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\Sublime Text",
+    "Arguments": "%filename%:%line%:%column_plus_one%"
+  },
+  {
+    "Title": "VS Code",
+    "Executable": "Code.cmd",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "-g %filename%:%line%:%column_plus_one%"
+  },
+  {
+    "Title": "Notepad",
+    "Executable": "notepad.exe",
+    "ExecutableWorkingDirectory": "",
+    "Arguments": "%filename%",
+    "Notes": "Only supports opening file"
+  },
+  {
+    "Title": "UltraEdit 64",
+    "Executable": "uedit64.exe",
+    "ExecutableWorkingDirectory": "%programfiles%\\IDM Computer Solutions\\UltraEdit",
+    "Arguments": "%filename%/%line%/1",
+    "Notes": "Only supports line number, column isn't char based and can vary based on tab indentation settings"
+  },
+  {
+    "Title": "Visual Studio 2022 Enterprise",
+    "Executable": "devenv",
+    "ExecutableWorkingDirectory": "%programfiles%\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\",
+    "Arguments": "/edit \u0022%filename%\u0022 /command \u0022edit.goto %filename% %line%\u0022",
+    "Notes": "Only goes to the line when opening a new instance"
+  },
+  {
+    "Title": "Brackets",
+    "Executable": "brackets.exe",
+    "ExecutableWorkingDirectory": "%programfiles(x86)%\\brackets",
+    "Arguments": "%filename%",
+    "Notes": "Only Opens file"
+  },
+  {
+    "Title": "Phoenix",
+    "Executable": "Phoenix Code.exe",
+    "ExecutableWorkingDirectory": "%appdata%\\..\\local\\Phoenix Code\\",
+    "Arguments": "%filename%",
+    "Notes": "Only Opens file"
+  }
+]
