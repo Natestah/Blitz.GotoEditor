@@ -46,15 +46,7 @@ public partial class MainWindow : Window
     {
         vm.ManualEditorEntry.PropertyChanged += ManualEditorEntryOnPropertyChanged;
 
-        var gotoAssembly = Assembly.GetAssembly(typeof(GotoEditor));
-        Debug.Assert(gotoAssembly != null, nameof(gotoAssembly) + " != null");
-        using Stream? stream = gotoAssembly.GetManifestResourceStream("Blitz.Goto.Resources.GotoDefs.json");
-        Debug.Assert(stream != null, nameof(stream) + " != null");
-        using StreamReader reader = new StreamReader(stream);
-        var result = reader.ReadToEnd();
-        var gotoEditorList = JsonSerializer.Deserialize<System.Collections.Generic.List<GotoEditor>>(result);
-        Debug.Assert(gotoEditorList != null, nameof(gotoEditorList) + " != null");
-        foreach (var gotoEditor in gotoEditorList)
+        foreach (var gotoEditor in new GotoDefinitions().GetBuiltInEditors())
         {
             vm.GotoEditorCollection.Add(new GotoEditorViewModel(gotoEditor));
         }

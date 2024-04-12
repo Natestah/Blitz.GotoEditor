@@ -27,6 +27,10 @@ public class GotoAction(GotoEditor gotoEditor)
             }
         }
         var fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
+        if (!File.Exists(fileName))
+        {
+            throw new FileNotFoundException("Goto Editor not found.", fileName);
+        }
         var startInfo = new ProcessStartInfo(fileName)
         {
             CreateNoWindow = true,
