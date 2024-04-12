@@ -9,7 +9,7 @@ Blitz.GotoEditor features:
 * Built in Aliases that you can list in your UI
 
 ## Getting started
-* todo:
+* Intstall the Blitz.Goto Package from your nuget package manager.
 
 ### How to set up a new project that utilizes Blitz.Goto:
 * Create an [empty console Appliction](https://docs.avaloniaui.net/docs/getting-started).
@@ -19,10 +19,9 @@ Blitz.GotoEditor features:
 * List Built in Editors
 ```.cs
 var definitions = new GotoDefinitions();
-foreach (var gotoEditor in  new GotoDefinitions().GetBuiltInEditors())
+foreach (var edit in  new GotoDefinitions().GetBuiltInEditors())
 {
-    Console.WriteLine(
-        $"Title: {gotoEditor.Title} -> {Path.Combine(gotoEditor.ExecutableWorkingDirectory, gotoEditor.Executable)} {gotoEditor.Arguments}");
+    Console.WriteLine($"Title: {edit.Title} -> {Path.Combine(edit.ExecutableWorkingDirectory, edit.Executable)} {edit.Arguments}");
 }
 ```
 
