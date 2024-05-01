@@ -3,10 +3,9 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>Blitz.Goto</Title>
         <Description>Helper class for suggesting and managing Goto command line parameters for varius popular text editors (VSCode,SublimeText,..)</Description>
-        <PackageReleaseNotes>Blitz Goto handles wrangling command lines, to open any Text Editor to a Filename, Line, and Column.</PackageReleaseNotes>
+        <PackageReleaseNotes>Updated for filenames with spaces</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PublishAot>true</PublishAot>
@@ -14,7 +13,7 @@
         <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
         <TargetFramework>net8.0</TargetFramework>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
     </PropertyGroup>
 
     <ItemGroup>

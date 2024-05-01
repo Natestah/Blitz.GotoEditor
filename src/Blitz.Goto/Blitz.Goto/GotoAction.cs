@@ -4,28 +4,47 @@ namespace Blitz.Goto;
 
 public class GotoAction(GotoEditor gotoEditor)
 {
+    private bool LocateDirectoryFromSystemPath(string inputWorkingDirectory, out string workingDirectory)
+    {
+        workingDirectory = null;
+        if (!string.IsNullOrEmpty(inputWorkingDirectory))
+        {
+            return false;
+        }
+        // search for it in %path% environment variable.
+        foreach (var path in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';', StringSplitOptions.TrimEntries))
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                continue;
+            }
+            var test = Path.Combine(path, gotoEditor.Executable);
+            if (!File.Exists(test))
+            {
+                continue;
+            }
+            workingDirectory = path;
+            return true;
+        }
+        return false;
+    }
+    
     public void ExecuteGoto( GotoDirective gotoDirective)
     {
         var argumentConverter = new GotoArgumentConverter(gotoDirective);
-        var workingDirectory = Environment.ExpandEnvironmentVariables(gotoEditor.ExecutableWorkingDirectory);
-        if (string.IsNullOrEmpty(workingDirectory))
+        string workingDirectory = Environment.ExpandEnvironmentVariables(gotoEditor.ExecutableWorkingDirectory);
+
+        if (LocateDirectoryFromSystemPath(workingDirectory, out var foundPath))
         {
-            // search for it in %path% environment variable.
-            foreach (var path in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';', StringSplitOptions.TrimEntries))
-            {
-                if (string.IsNullOrEmpty(path))
-                {
-                    continue;
-                }
-                var test = Path.Combine(path, gotoEditor.Executable);
-                if (!File.Exists(test))
-                {
-                    continue;
-                }
-                workingDirectory = path;
-                break;
-            }
+            workingDirectory = foundPath;
         }
+
+        if (GotoJetbrainsRider.Instance.IsMatchForWorkingDirectory(workingDirectory)
+            &&  GotoJetbrainsRider.Instance.GetWorkingDirectory(out var matched))
+        {
+            workingDirectory = matched;
+        }
+        
         var fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
         if (!File.Exists(fileName))
         {
