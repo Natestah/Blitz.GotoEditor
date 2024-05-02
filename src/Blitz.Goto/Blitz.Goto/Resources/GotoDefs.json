@@ -15,7 +15,8 @@
     "Title": "VS Code",
     "Executable": "Code.cmd",
     "ExecutableWorkingDirectory": "",
-    "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%"
+    "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Get BlitzSearch Extension from marketplace to enable 'Blitz Search This' command"
   },
   {
     "Title": "Notepad",
@@ -29,7 +30,7 @@
     "Executable": "uedit64.exe",
     "ExecutableWorkingDirectory": "%programfiles%\\IDM Computer Solutions\\UltraEdit",
     "Arguments": "\u0022%filename%\u0022/%line%/1",
-    "Notes": "Only supports line number, column isn't char based and can vary based on tab indentation settings"
+    "Notes": "Only supports line number."
   },
   {
     "Title": "JetBrains Rider (Latest)",
@@ -40,7 +41,7 @@
   },
   {
     "Title": "Visual Studio 2022 Enterprise",
-    "Executable": "devenv",
+    "Executable": "devenv.exe",
     "ExecutableWorkingDirectory": "%programfiles%\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\",
     "Arguments": "/edit \u0022%filename%\u0022 /command \u0022edit.goto \u0022%filename%\u0022 %line%\u0022",
     "Notes": "Only goes to the line when opening a new instance"

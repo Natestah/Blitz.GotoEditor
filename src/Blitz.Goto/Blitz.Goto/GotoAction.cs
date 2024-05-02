@@ -31,6 +31,12 @@ public class GotoAction(GotoEditor gotoEditor)
     
     public void ExecuteGoto( GotoDirective gotoDirective)
     {
+        var startInfo = GetStartinfoForDirective(gotoDirective);
+        Process.Start(startInfo);
+    }
+
+    public ProcessStartInfo GetStartinfoForDirective(GotoDirective gotoDirective, bool forPreview = false)
+    {
         var argumentConverter = new GotoArgumentConverter(gotoDirective);
         string workingDirectory = Environment.ExpandEnvironmentVariables(gotoEditor.ExecutableWorkingDirectory);
 
@@ -46,17 +52,17 @@ public class GotoAction(GotoEditor gotoEditor)
         }
         
         var fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
-        if (!File.Exists(fileName))
+        if (!File.Exists(fileName) && !forPreview)
         {
             throw new FileNotFoundException("Goto Editor not found.", fileName);
         }
-        var startInfo = new ProcessStartInfo(fileName)
+        
+        return new ProcessStartInfo(fileName)
         {
             CreateNoWindow = true,
             WorkingDirectory =  workingDirectory,
             Arguments = argumentConverter.ConvertArguments(gotoEditor.Arguments)
         };
-        Process.Start(startInfo);
     }
 
 }

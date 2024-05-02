@@ -24,16 +24,16 @@ public class GotoArgumentConverter(GotoDirective gotoDirective)
                 (inputArgument) => inputArgument.Replace(LineAlias, gotoDirective.Line.ToString())),
             new(ColumnAlias, "Column number",
                 (inputArgument) => inputArgument.Replace(ColumnAlias, gotoDirective.Column.ToString())),
-            new(ColumnPlusOneAliass, "Column number with offset",
+            new(ColumnPlusOneAliass, "Column+offset",
                 (inputArgument) => inputArgument.Replace(ColumnPlusOneAliass, (gotoDirective.Column + 1).ToString())),
-            new(PositionAlias, "Text Buffer position",
+            new(PositionAlias, "Buffer position",
                 (inputArgument) => inputArgument.Replace(PositionAlias, GetPositionFromLineColumn(gotoDirective).ToString())),
         };
     }
 
     public static int GetPositionFromLineColumn(GotoDirective? gotoDirective)
     {
-        if (gotoDirective == null)
+        if (gotoDirective == null || !File.Exists(gotoDirective.FileName))
         {
             return 0;
         }
