@@ -30,6 +30,7 @@ public partial class MainWindow : Window
         }
         InstallEditor();
         ApplyGotoFromJsonResource(vm);
+        Console.WriteLine("test");
     }
 
     private static void SetManualEditorTo(MainWindowViewModel vm, GotoEditorViewModel selectedGotoEditor)

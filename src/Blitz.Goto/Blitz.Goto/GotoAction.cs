@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 
 namespace Blitz.Goto;
 
@@ -31,6 +32,21 @@ public class GotoAction(GotoEditor gotoEditor)
     
     public void ExecuteGoto( GotoDirective gotoDirective)
     {
+        if (!string.IsNullOrEmpty(gotoEditor.CodeExecute))
+        {
+            switch (gotoEditor.CodeExecute)
+            {
+                case "VisualStudioPlugin":
+                    var appdata = Environment.ExpandEnvironmentVariables("%appdata%");
+                    string path = Path.Combine(appdata, "NathanSilvers", "POORMANS_IPC");
+                    Directory.CreateDirectory(path);
+                    string file = Path.Combine(path, "VISUAL_STUDIO_GOTO.txt");
+                    File.WriteAllText(file, $"{gotoDirective.FileName},{gotoDirective.Line},{gotoDirective.Column}");
+                    break;
+            }
+
+            return;
+        }
         var startInfo = GetStartinfoForDirective(gotoDirective);
         Process.Start(startInfo);
     }
@@ -45,10 +61,10 @@ public class GotoAction(GotoEditor gotoEditor)
             workingDirectory = foundPath;
         }
 
-        if (GotoJetbrainsRider.Instance.IsMatchForWorkingDirectory(workingDirectory)
-            &&  GotoJetbrainsRider.Instance.GetWorkingDirectory(out var matched))
+        if (GotoJetbrainsIDE.Instance.IsMatchForWorkingDirectory(workingDirectory)
+            &&  GotoJetbrainsIDE.Instance.GetWorkingDirectory(workingDirectory, gotoEditor.Executable, out var matched))
         {
-            workingDirectory = matched;
+            workingDirectory = matched!;
         }
         
         var fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
