@@ -5,22 +5,42 @@ namespace Blitz.Goto;
 
 public class GotoAction(GotoEditor gotoEditor)
 {
-    private bool LocateDirectoryFromSystemPath(string inputWorkingDirectory, out string workingDirectory)
+    
+    private bool LocateDirectoryFromSystemPath(string inputWorkingDirectory, string exeName, out string workingDirectory)
     {
         workingDirectory = null;
+        
         if (!string.IsNullOrEmpty(inputWorkingDirectory))
         {
             return false;
         }
+
+        string[]? pathVars;
+        try
+        {
+            pathVars = (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';', StringSplitOptions.TrimEntries);
+        }
+        catch
+        {
+            return false;
+        }
         // search for it in %path% environment variable.
-        foreach (var path in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';', StringSplitOptions.TrimEntries))
+        foreach (var path in pathVars)
         {
             if (string.IsNullOrEmpty(path))
             {
                 continue;
             }
-            var test = Path.Combine(path, gotoEditor.Executable);
-            if (!File.Exists(test))
+
+            try
+            {
+                var test = Path.Combine(path, exeName);
+                if (!File.Exists(test))
+                {
+                    continue;
+                }
+            }
+            catch (Exception ex)
             {
                 continue;
             }
@@ -29,6 +49,7 @@ public class GotoAction(GotoEditor gotoEditor)
         }
         return false;
     }
+
     
     public void ExecuteGoto( GotoDirective gotoDirective)
     {
@@ -51,12 +72,48 @@ public class GotoAction(GotoEditor gotoEditor)
         Process.Start(startInfo);
     }
 
-    public ProcessStartInfo GetStartinfoForDirective(GotoDirective gotoDirective, bool forPreview = false)
+    
+    private bool CanGotoVisualStudio()
     {
-        var argumentConverter = new GotoArgumentConverter(gotoDirective);
-        string workingDirectory = Environment.ExpandEnvironmentVariables(gotoEditor.ExecutableWorkingDirectory);
+        try
+        {
+            // search for it in %path% environment variable.
+            foreach (var path in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';',
+                         StringSplitOptions.TrimEntries))
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    continue;
+                }
 
-        if (LocateDirectoryFromSystemPath(workingDirectory, out var foundPath))
+                if (path.Contains("Visual Studio"))
+                {
+                    return true;
+                }
+            }
+        }
+        catch
+        {
+            return false;
+        }
+
+        return false;
+    }
+    
+    public bool CanDoAction()
+    {
+        switch (gotoEditor.CodeExecute)
+        {
+            case "VisualStudioPlugin":
+                return CanGotoVisualStudio();
+        }
+        return LocateExecutable(out _, out _);
+    }
+
+    private bool LocateExecutable(out string workingDirectory, out string fileName)
+    {
+        workingDirectory = Environment.ExpandEnvironmentVariables(gotoEditor.ExecutableWorkingDirectory);
+        if (LocateDirectoryFromSystemPath(workingDirectory,gotoEditor.Executable, out var foundPath))
         {
             workingDirectory = foundPath;
         }
@@ -67,8 +124,13 @@ public class GotoAction(GotoEditor gotoEditor)
             workingDirectory = matched!;
         }
         
-        var fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
-        if (!File.Exists(fileName) && !forPreview)
+        fileName = Path.Combine(workingDirectory, gotoEditor.Executable);
+        return File.Exists(fileName);
+    }
+
+    public ProcessStartInfo GetStartinfoForDirective(GotoDirective gotoDirective, bool forPreview = false)
+    {
+        if(!LocateExecutable(out var workingDirectory, out var fileName)&& !forPreview)
         {
             throw new FileNotFoundException("Goto Editor not found.", fileName);
         }
@@ -77,7 +139,7 @@ public class GotoAction(GotoEditor gotoEditor)
         {
             CreateNoWindow = true,
             WorkingDirectory =  workingDirectory,
-            Arguments = argumentConverter.ConvertArguments(gotoEditor.Arguments)
+            Arguments = new GotoArgumentConverter(gotoDirective).ConvertArguments(gotoEditor.Arguments)
         };
     }
 

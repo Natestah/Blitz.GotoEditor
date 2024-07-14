@@ -99,7 +99,7 @@
     "Title": "Fleet",
     "Executable": "fleet.exe",
     "ExecutableWorkingDirectory": "%localappdata%\\Programs\\fleet",
-    "Arguments": "--line %line% \u0022%filename%\u0022",
+    "Arguments": "--goto=\u0022%filename%\u0022:%line%:%column%",
     "Notes": ""
   },
   {
