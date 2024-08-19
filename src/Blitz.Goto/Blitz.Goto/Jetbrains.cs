@@ -5,22 +5,31 @@ public static class Jetbrains
     
     public static void GetWorkingDirectory(string path_prefix, out string? workingDirectory, string binName)
     {
-        string path = Environment.ExpandEnvironmentVariables(@"%programfiles%\jetbrains");
-        DateTime latestAndGreatest = DateTime.MinValue;
         workingDirectory = null;
-        foreach (var subDirectory in Directory.EnumerateDirectories(path).Where((p)=>p.Contains(path_prefix) ))
+        var environments = new[] { "%programfiles%\\jetbrains", "%localappdata%\\Programs" };
+        foreach (var envVar in environments)
         {
-            string? searchDirectory = Path.Combine(subDirectory, "bin"); 
-            string searchPath = Path.Combine(searchDirectory, binName);
-            if (File.Exists(searchPath))
+            string path = Environment.ExpandEnvironmentVariables(@$"{envVar}");
+            if (!Directory.Exists(path))
             {
-                var age = File.GetLastWriteTimeUtc(searchPath);
-                if (age > latestAndGreatest)
+                continue;
+            }
+            DateTime latestAndGreatest = DateTime.MinValue;
+            foreach (var subDirectory in Directory.EnumerateDirectories(path).Where((p)=>p.Contains(path_prefix) ))
+            {
+                string? searchDirectory = Path.Combine(subDirectory, "bin"); 
+                string searchPath = Path.Combine(searchDirectory, binName);
+                if (File.Exists(searchPath))
                 {
-                    workingDirectory = searchDirectory;
-                    latestAndGreatest = age;
+                    var age = File.GetLastWriteTimeUtc(searchPath);
+                    if (age > latestAndGreatest)
+                    {
+                        workingDirectory = searchDirectory;
+                        latestAndGreatest = age;
+                    }
                 }
             }
         }
+        
     }
 }
