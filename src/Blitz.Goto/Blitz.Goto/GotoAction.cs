@@ -50,30 +50,67 @@ public class GotoAction(GotoEditor gotoEditor)
         return false;
     }
 
-    
-    public void ExecuteGoto( GotoDirective gotoDirective)
+
+    private void executeGotoByPoorMansIPC( GotoDirective gotoDirective, string ipcIdentity, string pathSeperator =";", bool preview = true)
     {
+        var appdata = Environment.ExpandEnvironmentVariables("%appdata%");
+        string path = Path.Combine(appdata, "NathanSilvers", "POORMANS_IPC");
+        Directory.CreateDirectory(path);
+        string previewSuffix = preview ? "_PREVIEW": string.Empty;
+        string file = Path.Combine(path, $"{ipcIdentity}{previewSuffix}.txt");
+        File.WriteAllText(file, $"{gotoDirective.FileName}{pathSeperator}{gotoDirective.Line}{pathSeperator}{gotoDirective.Column}");
+    }
+
+    bool ExecutableBootRequired()
+    {
+        if (!string.IsNullOrEmpty(gotoEditor.RunningProcessName))
+        {
+            return Process.GetProcessesByName(gotoEditor.RunningProcessName.Replace(".exe","")).Length == 0;
+        }
+        
+        if (!string.IsNullOrEmpty(gotoEditor.Executable)  )
+        {
+            if (gotoEditor.Executable.ToLower().Contains(".exe"))
+            {
+                return Process.GetProcessesByName(gotoEditor.Executable.Replace(".exe","")).Length == 0;
+            }
+        }
+
+        return true;
+    }
+    
+    public void ExecuteGoto( GotoDirective gotoDirective, bool preview = false)
+    {
+        bool runExecutable = true;
         if (!string.IsNullOrEmpty(gotoEditor.CodeExecute))
         {
             switch (gotoEditor.CodeExecute)
             {
+                case "VsCodeGoto":
+                    executeGotoByPoorMansIPC(gotoDirective, "VS_CODE_GOTO", ";", preview);
+                    runExecutable = ExecutableBootRequired();
+                    break;
                 case "VisualStudioPlugin":
-                    var appdata = Environment.ExpandEnvironmentVariables("%appdata%");
-                    string path = Path.Combine(appdata, "NathanSilvers", "POORMANS_IPC");
-                    Directory.CreateDirectory(path);
-                    string file = Path.Combine(path, "VISUAL_STUDIO_GOTO.txt");
-                    File.WriteAllText(file, $"{gotoDirective.FileName},{gotoDirective.Line},{gotoDirective.Column}");
+                    executeGotoByPoorMansIPC(gotoDirective, "VISUAL_STUDIO_GOTO", ",");
+                    runExecutable = false;
+                    break;
+                case "BlitzEdit":
+                    executeGotoByPoorMansIPC(gotoDirective, "BLITZ_EDIT_GOTO" );
+                    runExecutable = false;
                     break;
             }
+            
+        }
 
+        if (!runExecutable)
+        {
             return;
         }
         var startInfo = GetStartinfoForDirective(gotoDirective);
         Process.Start(startInfo);
     }
 
-    
-    private bool CanGotoVisualStudio()
+    private bool AnySystemPathContains(string containsCheck)
     {
         try
         {
@@ -86,7 +123,7 @@ public class GotoAction(GotoEditor gotoEditor)
                     continue;
                 }
 
-                if (path.Contains("Visual Studio"))
+                if (path.Contains(containsCheck))
                 {
                     return true;
                 }
@@ -105,7 +142,9 @@ public class GotoAction(GotoEditor gotoEditor)
         switch (gotoEditor.CodeExecute)
         {
             case "VisualStudioPlugin":
-                return CanGotoVisualStudio();
+                return AnySystemPathContains("Visual Studio");
+            case "VsCodeGoto":
+                return AnySystemPathContains("Microsoft VS Code");
         }
         return LocateExecutable(out _, out _);
     }

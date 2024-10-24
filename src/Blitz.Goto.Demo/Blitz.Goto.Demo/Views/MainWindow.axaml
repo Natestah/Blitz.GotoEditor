@@ -63,6 +63,15 @@
                     <TextBlock Classes="p1" Text="WorkingDirectory" />
                     <TextBox Classes="e1" Text="{Binding ExecutableWorkingDirectory}" />
                 </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="CodeExecute" />
+                    <TextBox Classes="e1" Text="{Binding CodeExecute }" />
+                </DockPanel>
+                
+                <DockPanel LastChildFill="True">
+                    <TextBlock Classes="p1" Text="RunningProcessName" />
+                    <TextBox Classes="e1" Text="{Binding RunningProcessName }" />
+                </DockPanel>
                 
                 <DockPanel LastChildFill="True">
                     <TextBlock Classes="p1" Text="CommandLine" />
@@ -106,6 +115,9 @@
             </StackPanel>
             <Button Click="TestGotoButton">
                 Test Goto
+            </Button>
+            <Button Click="TestGotoPreviewButton">
+                Test Goto Preview
             </Button>
         </DockPanel>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" IsTabStop="False" />

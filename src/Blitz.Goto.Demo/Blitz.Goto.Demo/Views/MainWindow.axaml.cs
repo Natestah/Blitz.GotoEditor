@@ -38,6 +38,8 @@ public partial class MainWindow : Window
         var manualEditor = vm.ManualEditorEntry;
         manualEditor.Title = selectedGotoEditor.Title;
         manualEditor.CommandLine = selectedGotoEditor.CommandLine;
+        manualEditor.CodeExecute = selectedGotoEditor.CodeExecute;
+        manualEditor.RunningProcessName = selectedGotoEditor.RunningProcessName;
         manualEditor.ExecutableWorkingDirectory = selectedGotoEditor.ExecutableWorkingDirectory;
         manualEditor.Executable = selectedGotoEditor.Executable;
         manualEditor.Notes = selectedGotoEditor.Notes;
@@ -91,8 +93,12 @@ public partial class MainWindow : Window
     {
         GotoCurrentManualGotoEditor();
     }
+    private void TestGotoPreviewButton(object? sender, RoutedEventArgs e)
+    {
+        GotoCurrentManualGotoEditor(true);
+    }
 
-    private void GotoCurrentManualGotoEditor()
+    private void GotoCurrentManualGotoEditor(bool preview = false)
     {
         // Define what you want to go to.  CreateAndTestFile will create a temp file path that you can test Goto Functionality with.
         new GotoTestFile().CreateAndTestFile(out var testFile,out var lineTest, out var testColumn );
@@ -106,7 +112,7 @@ public partial class MainWindow : Window
         var gotoAction = new GotoAction(mv.ManualEditorEntry.GotoEditor);
         try
         {
-            gotoAction.ExecuteGoto(gotoDirective);
+            gotoAction.ExecuteGoto(gotoDirective, preview);
         }
         catch (Exception exception)
         {

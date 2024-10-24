@@ -14,8 +14,18 @@
     "Notes": "Extension Available"
   },
   {
+    "Title": "BlitzEdit",
+    "CodeExecute": "BlitzEdit",
+    "Executable": "BlitzEdit.exe",
+    "ExecutableWorkingDirectory": "-",
+    "Arguments": "\u0022%filename%\u0022:%line%:%column_plus_one%",
+    "Notes": "Built in Blitz Text Editor"
+  },
+  {
     "Title": "VS Code",
-    "Executable": "Code.cmd",
+    "Executable": "code.cmd",
+    "CodeExecute": "VsCodeGoto",
+    "RunningProcessName": "code.exe",
     "ExecutableWorkingDirectory": "",
     "Arguments": "-g \u0022%filename%\u0022:%line%:%column_plus_one%",
     "Notes": "Extension Available"

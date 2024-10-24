@@ -37,6 +37,26 @@ public class GotoEditorViewModel(GotoEditor gotoEditor) : ViewModelBase
         }
     }
 
+    public string CodeExecute
+    {
+        get => gotoEditor.CodeExecute;
+        set
+        {
+            gotoEditor.CodeExecute = value;
+            this.RaisePropertyChanged();
+        }
+    }
+    
+    public string RunningProcessName
+    {
+        get => gotoEditor.RunningProcessName;
+        set
+        {
+            gotoEditor.RunningProcessName = value;
+            this.RaisePropertyChanged();
+        }
+    }
+
     public string CommandLine
     {
         get => gotoEditor.Arguments;
