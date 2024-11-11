@@ -91,11 +91,11 @@ public class GotoAction(GotoEditor gotoEditor)
                     runExecutable = ExecutableBootRequired();
                     break;
                 case "VisualStudioPlugin":
-                    executeGotoByPoorMansIPC(gotoDirective, "VISUAL_STUDIO_GOTO", ",");
+                    executeGotoByPoorMansIPC(gotoDirective, "VISUAL_STUDIO_GOTO", ",", preview);
                     runExecutable = false;
                     break;
                 case "BlitzEdit":
-                    executeGotoByPoorMansIPC(gotoDirective, "BLITZ_EDIT_GOTO" );
+                    executeGotoByPoorMansIPC(gotoDirective, "BLITZ_EDIT_GOTO", ";", preview);
                     runExecutable = false;
                     break;
             }

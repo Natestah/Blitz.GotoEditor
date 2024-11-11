@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <Title>Blitz.Goto</Title>
         <Description>Helper class for suggesting and managing Goto command line parameters for varius popular text editors (VSCode,SublimeText,..)</Description>
-        <PackageReleaseNotes>Adding Preview Support for VS Code.</PackageReleaseNotes>
+        <PackageReleaseNotes>Fix bug in Visual Studio Goto Execution</PackageReleaseNotes>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PublishAot>true</PublishAot>
@@ -13,7 +13,7 @@
         <PackageProjectUrl>https://www.natestah.com</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Natestah/Blitz.GotoEditor/</RepositoryUrl>
         <TargetFramework>net8.0</TargetFramework>
-        <Version>1.0.7</Version>
+        <Version>1.0.8</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
@@ -28,10 +28,6 @@
 
     <ItemGroup>
       <None Remove="Resources\Rider_icon.png" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Blitz.Interfacing" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
